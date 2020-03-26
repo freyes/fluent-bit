@@ -37,6 +37,7 @@ parts:
         - libssl-dev
         - libpq5
         - postgresql-server-dev-all
+        - git  # needed by the script in overrider-pull.
     configflags:
         - -DFLB_DEBUG=On
         - -DFLB_OUT_KAFKA=On
@@ -44,3 +45,9 @@ parts:
         - -DFLB_EXAMPLES=OFF
         - -DFLB_SHARED_LIB=Off
         - -DFLB_OUT_PGSQL=On
+    override-pull: |
+      snapcraftctl pull
+      version="$(git describe --tags --always --dirty)"
+      [ -n "$(echo $version | grep '-')" ] && grade=devel || grade=stable
+      snapcraftctl set-version "$version"
+      snapcraftctl set-grade "$grade"
