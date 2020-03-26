@@ -19,8 +19,7 @@ apps:
 
 parts:
   fluent-bit:
-    source: https://github.com/fluent/fluent-bit
-    source-type: git
+    source: ./
     plugin: cmake
     stage-packages:
         - libsasl2-2
